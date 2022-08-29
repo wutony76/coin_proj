@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<style>
+.cancel{
+  background: #f9b6b6;
+}
+
+.order_due{
+  background: #b9b9b9;
+}
+
+.waiting_pay{
+  background: #fbd3a1;
+}
+
+.paying{
+  background: #b6f3f9;
+}
+
+.success{
+  background: #b6f9d7;
+}
+
+</style>
+
+
+
+<a href="{% url 'pay_create' %}"> 新增代收訂單 </a>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th style="width: 150px;">ant_id</th>
+      <th>whose_id</th>
+      <th>out_sn</th>
+      <th>sn</th>
+      <th>money</th>
+      <th>bank_code</th>
+      <th>bank_number</th>
+      <th style="width: 100px;">status</th>
+
+      <th>create_time</th>
+      <th>pair_time (指派時間)</th>
+      <th>cancel_time (取消時間)</th>
+      <th>pay_time (收款時間)</th>
+
+      <th>remark</th>
+      <th>收銀台</th>
+      <th></th>
+      <th style="width: 70px;"></th>
+    </tr>
+  </thead>
+
+
+
+  <tbody>
+    {% for obj in pay_objs %}
+    <tr
+      {% if obj.status == 3 %} 
+        class = "cancel"
+      {% elif obj.status == 4 %} 
+        class = "cancel"
+      {% elif obj.status == -1 %} 
+        class = "order_due"
+      {% elif obj.status == 2 %} 
+        class = "waiting_pay"
+      {% elif obj.status == 5 %} 
+        class = "paying"
+      {% elif obj.status == 0 %} 
+        class = "success"
+      {% endif %} 
+      >
+      <td>{{ obj.id }}</td>
+
+      <td>
+        指派(ANT) :
+        <span style="color:#ff0000; font-weight: bold;">
+           {{ obj.ant_id }}
+        </span>
+        <br/>
+        <br/>
+
+        {% if obj.status == -1 or obj.status == 2 %} 
+          <form action="{% url 'pay_appoint' %}" method="post">
+            <input type="hidden" name="pay_id" value="{{obj.id}}" >
+            <select name="ant">
+              {% for a in ants %}
+                <option value="{{ a }}">{{ a }}</option>
+              {% endfor %}
+            </select>
+            <input type="submit" value="指派">
+          </form>
+        {% endif %} 
+      </td>
+
+
+      <td>{{ obj.whose_id }}</td>
+      <td>{{ obj.out_sn }}</td>
+      <td>{{ obj.sn }}</td>
+      <td>{{ obj.money }}</td>
+      <td>{{ obj.bank_code }}</td>
+      <td>{{ obj.bank_number }}</td>
+
+      <td>
+        {% if obj.status == 3 %} 
+          <span style="font-weight: bold;"> 已取消  </span>
+        {% elif obj.status == 4 %} 
+          <span style="font-weight: bold;"> 已取消  </span>
+
+        {% elif obj.status == -1 %} 
+          <span style="font-weight: bold;"> 未指派  </span>
+        {% elif obj.status == 2 %} 
+          <span style="font-weight: bold;"> 等待收款中...  </span>
+        {% elif obj.status == 5 %} 
+          <span style="font-weight: bold;"> 已收款待確認 </span>
+        {% elif obj.status == 0 %} 
+          <span style="font-weight: bold;"> 成功 </span>
+        {% endif %}
+        ({{ obj.status }})
+      </td>
+      <td>{{ obj.create_time }}</td>
+      <td>{{ obj.pair_time }}</td>
+      <td>{{ obj.cancel_time }}</td>
+      <td>{{ obj.pay_time }}</td>
+      <td>{{ obj.remark }}</td>
+      <td>
+        <a href="{% url 'pay_bank' %}?q={{obj.order_key}}"> {% url 'pay_bank' %}?q={{obj.order_key}} </a>
+      </td>
+      <td>{{ obj }}</td>
+      <td>
+        <li> <a href="{% url 'pay_edit' %}?q={{obj.id}}"> 編輯 </a> </li>
+        <li> <a href="{% url 'pay_cancel' %}?q={{obj.id}}"> 取消 </a> </li>
+        <li> <a href="{% url 'pay_success' %}?q={{obj.id}}"> 成功 </a> </li>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+
+</table>
+
+
+
+{% endblock %}

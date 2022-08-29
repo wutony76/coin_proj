@@ -1,0 +1,6 @@
+*.pyc
+*.swp
+*.swo
+packages
+packages/*
+nohup.out

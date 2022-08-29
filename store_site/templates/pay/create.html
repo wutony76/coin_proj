@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<a href="{% url 'pay_list' %}"> PAY列表 </a>
+
+<form action="{% url 'pay_save' %}" method="post">
+  <table>
+    {{ form.as_table }}
+  </table>
+  <input type="submit" value="ok">
+</form>       
+
+
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<a href="{% url 'ant_create' %}"> 新增碼商 </a>
+
+<table border="1">
+  <thead>
+    <tr>
+      <td>id</td>
+      <td>ant_id</td>
+      <td>mobile</td>
+      <td>password</td>
+      <td>time</td>
+      <td>remark</td>
+      <td>key</td>
+
+      <td></td>
+      <td></td>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for obj in ant_user_objs %}
+    <tr>
+      <td>{{ obj.id }}</td>
+      <td>{{ obj.ant_id }}</td>
+      <td>{{ obj.mobile }}</td>
+      <td>{{ obj.password }}</td>
+      <td>{{ obj.create_time }}</td>
+      <td>{{ obj.remark }}</td>
+      <td>{{ obj.key }}</td>
+      <td>{{ obj }}</td>
+
+      <td>
+        <a href="{% url 'ant_edit' %}?q={{obj.id}}"> 編輯 </a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+
+</table>
+
+
+
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<a href="{% url 'cash_list' %}"> CASH列表 </a>
+
+
+<ul>
+  <li> STATUS = -1 只有新單可以修改資料 </li>
+  <li>  </li>
+</ul>
+
+
+<form action="{% url 'cash_save' %}" method="post">
+  <table>
+    <tr>
+      <th> id: </th>
+      <td> 
+        <input type="text" name="id" value="{{ data.id }}" readonly="readonly" />  
+      </td>
+    </tr>
+
+    <tr>
+      <th> order: </th>
+      <td> 
+        <input type="text" name="sn" value="{{ data.sn }}" readonly="readonly" />  
+      </td>
+    </tr>
+    {{ form.as_table }}
+
+
+  </table>
+  <input type="submit" value="save">
+</form>       
+
+
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<a href="{% url 'ant_list' %}"> 碼商列表 </a>
+
+<form action="{% url 'ant_save' %}" method="post">
+  <table>
+    {{ form.as_table }}
+  </table>
+  <input type="submit" value="ok">
+</form>       
+
+
+{% endblock %}

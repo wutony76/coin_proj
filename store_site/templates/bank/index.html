@@ -1,0 +1,154 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title> 收款訊息 </title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+
+    <style type="text/css">
+        .weui-form-preview__value {
+            display: inline-block;
+            overflow: hidden;
+            word-break: normal;
+            word-wrap: break-word;
+            color: rgba(0, 0, 0, 0.9);
+        }
+        .weui-btn_mini {
+            line-height: 1.8;
+        }
+        .weui-loadmore {
+            width: 86%;
+            font-size: 12px;
+        }
+        body, .body {
+            background: #f7f7f7;
+            height: 100%;
+            max-width: 640px;
+            min-width: 300px;
+            min-height: 100%;
+            margin: 0 auto;
+        }
+        .wite{    background: #fff;}
+        .mod-ct {
+            min-width: 300px;
+            max-width: 640px;
+            margin: 0 auto;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            background: #fff url(/public/static/wave.png) top center repeat-x;
+            color: #333;
+            border: 1px solid #e5e5e5;
+            border-top: none;
+        }
+        .mod-ct .order {
+            font-size: 20px;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+
+<body ontouchstart>
+<div class="body">
+    <div class="page-hd wite" style="padding-top:40px;">
+        <h1 class="page-hd-title" style="text-align: center">
+          {{ title }}
+
+        </h1>
+        <p class="page-hd-desc" style="text-align: center">訂單號：{{ data.sn }}</p>
+        <p class="page-hd-desc" style="text-align: center;">支付金額：<span style="font-size:30px;color:red;"> {{ data.money }} </span>元</p>
+    </div>
+    <article class="weui-article page-hd wite mod-ct">
+
+        <div class="weui-loadmore" id="loading" data-loading="1">
+            <i class="weui-loading"></i>
+            <!--
+            <span class="weui-loadmore__tips f-blue">正在获取支付信息，请耐心等待，30秒未获得支付信息，可能是因为高峰期有相同的付款金额占领通道，请尝试重新填写不同的金额支付！尽量不用整数充值！</span>
+            -->
+        </div>
+        <section style="margin: 0 auto">
+            <div class="weui-form-preview hide" id="pay_info">
+                <div class="weui-form-preview__bd">
+                    <p id="image" class="img-box" style="width:200px;margin:0 auto;"></p>
+                    <div class="weui-form-preview__item" id="bc_name">
+                        <label class="weui-form-preview__label hide" id="bc_name_text1">收款銀行</label>
+                        <span class="weui-form-preview__value hide" id="bc_name_text2" style=" color: #19851c;">
+                          {{ data.bank_code }}
+                        </span>&nbsp;&nbsp;
+                        <!--
+                        <a href="javascript:;" class="weui-btn weui-btn_mini b-blue cli1 hide " data-clipboard-text="" onclick= "" style="margin-left:5%;">复制</a>
+                        -->
+                    </div>
+
+                    <div class="weui-form-preview__item" id="bc_num">
+                        <label class="weui-form-preview__label hide" id="bc_num_text1">收款帳號</label>
+                        <span class="weui-form-preview__value  hide" id="bc_num_text2" style="color: #19851c;">
+                          {{ data.bank_number }}
+                        </span>&nbsp;&nbsp;
+                        <!--
+                        <a href="javascript:;" class="weui-btn weui-btn_mini b-blue cli2 hide" data-clipboard-text="" onclick= "" style="margin-left:15%;">复制</a>
+                        -->
+                    </div>
+
+                    <div class="weui-form-preview__item" id="bc_user">
+                        <label class="weui-form-preview__label hide" id="bc_user_text1">收款人</label>
+                        <span class="weui-form-preview__value  hide" id="bc_user_text2" style="color: #19851c;">
+                          {{ data.bank_name }}
+                        </span>&nbsp;&nbsp;
+                        <!--
+                        <a href="javascript:;" class="weui-btn weui-btn_mini b-blue cli4 hide" data-clipboard-text="" onclick= "" style="margin-left:15%;">复制</a>
+                        -->
+                    </div>
+                    <div class="weui-form-preview__item" id="bc_money">
+                        <label class="weui-form-preview__label hide" id="bc_money_text1">收款金额</label>
+                        <span class="weui-form-preview__value  hide" id="bc_money_text2" style="color: #ff0000;">
+                          {{ data.money }}
+                        </span>&nbsp;&nbsp;
+                        <!--
+                        <a href="javascript:;" class="weui-btn weui-btn_mini b-blue cli5 hide" data-clipboard-text="" onclick= "" style="margin-left:5%;">复制</a>
+                        -->
+                    </div>
+
+
+                    <!--<p id="image" class="img-box" style="width:200px;margin:0 auto;"></p>-->
+                </div>
+                <a href="javascript:;" class="weui-btn bg-blue hide" style="line-height: 2.3;" id="goto" target="_blank"></a>
+            </div>
+            <div class="weui-msg hide" style="opacity: 1;" id="success">
+                <div class="weui-msg__icon-area"><i class="weui-icon-success weui-icon_msg"></i></div>
+                <div class="weui-msg__text-area">
+                    <!--
+                    <h2 class="weui-msg__title">充值成功</h2>
+                    -->
+                </div>
+            </div>
+            <div class="weui-msg hide" style="opacity: 1; display: none;" id="error">
+                <div class="weui-msg__icon-area"><i class="weui-icon-warn weui-icon_msg"></i></div>
+                <div class="weui-msg__text-area">
+                    <!--
+                    <h2 class="weui-msg__title">订单已取消，请重新填写支付金额（例如：201，202，396，397...等等数值的金额充值）</h2>
+                    -->
+                    <p class="weui-msg__desc"></p>
+                </div>
+            </div>
+        </section>
+        <section class="f-red">
+            <ul class="page-hd">
+                <li>轉帳金額必須與這裡顯示的金額完全一致，並且必須在指定時間完成轉帳，否則將導致付款失敗!</li>
+                <li>如若入款至過期賬戶，本網站無法查收，恕不負責!</li>
+                <li>請在規定時間內付款，否則無法到帳!</li>
+            </ul>
+        </section>
+    </article>
+
+</div>
+
+
+<div>
+  <a href="{% url 'pay_check' %}?q={{data.order_key}}">
+    確認轉帳
+  </a>
+</div>
+
+</body>
+</html>
